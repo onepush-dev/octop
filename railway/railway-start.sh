@@ -10,6 +10,9 @@ export OCTOP_PORT="${OCTOP_PORT:-${PORT:-8088}}"
 mkdir -p "${OCTOP_HOME:-$HOME/.octop}"
 
 if [ -n "${OCTOP_DATABASE_URL:-}" ]; then
+  case "$OCTOP_DATABASE_URL" in
+    postgres://*|postgresql://*) export OCTOP_DATABASE_DRIVER="${OCTOP_DATABASE_DRIVER:-postgresql}" ;;
+  esac
   python - <<'PY'
 import os, socket, time, urllib.parse
 u = urllib.parse.urlparse(os.environ["OCTOP_DATABASE_URL"])
