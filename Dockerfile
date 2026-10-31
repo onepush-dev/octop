@@ -6,11 +6,10 @@ COPY railway/railway-start.sh /usr/local/bin/railway-start.sh
 RUN chmod 755 /usr/local/bin/railway-start.sh
 # Defaults live in the image so the Railway template only carries references and generated secrets.
 # Any of these can still be overridden with a Railway service variable.
+# The listen port follows Railway's injected PORT (fallback 8088), so domain + healthcheck always match.
 ENV HOME=/data \
     OCTOP_HOME=/data/.octop \
     OCTOP_BIND_HOST=0.0.0.0 \
-    OCTOP_PORT=8088 \
-    PORT=8088 \
     OCTOP_LOG_LEVEL=info \
     OCTOP_ADMIN_USERNAME=admin \
     OCTOP_ADMIN_DISPLAY_NAME=Admin \

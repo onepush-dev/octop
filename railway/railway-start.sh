@@ -6,7 +6,8 @@
 #  3. hands over to the upstream docker-entrypoint.sh (octop init on first boot, then `octop run`).
 set -euo pipefail
 export HOME="${HOME:-/data}"
-export OCTOP_PORT="${OCTOP_PORT:-${PORT:-8088}}"
+# Listen where Railway routes and health-checks: its PORT wins, then OCTOP_PORT, then 8088.
+export OCTOP_PORT="${PORT:-${OCTOP_PORT:-8088}}"
 mkdir -p "${OCTOP_HOME:-$HOME/.octop}"
 
 if [ -n "${OCTOP_DATABASE_URL:-}" ]; then
@@ -46,5 +47,6 @@ if [ -n "$pw" ]; then
   fi
 fi
 
+echo "[railway] Octop listening on port ${OCTOP_PORT}"
 echo "[railway] Octop admin user: ${OCTOP_ADMIN_USERNAME:-admin} (password = OCTOP_DEFAULT_PASSWORD variable, used on first boot only)"
 exec /usr/local/bin/docker-entrypoint.sh "$@"
